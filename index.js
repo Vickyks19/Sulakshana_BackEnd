@@ -13,6 +13,7 @@ import Creation from "./Creation.js";
 // import Quatation from "./Quotation.js";
 import Quotation from "./Quotation.js";
 import Items from "./Item.js";
+import Invoice from "./Invoice.js";
 import Painting from "./Painting.js";
 
 const app = express();
@@ -559,7 +560,6 @@ app.post("/quotation", async (req, res) => {
     grandTotal,
     total,
   } = req.body;
-  console.log(111, customername);
 
   const data = {
     quotationNo: quotationNo,
@@ -570,13 +570,9 @@ app.post("/quotation", async (req, res) => {
     total: total,
     grandTotal: grandTotal,
   };
-  console.log(55, data);
   try {
-    // const newItem = await Items.insertMany(items);
-    // console.log(11, newItem);
-
     const quotation = await Quotation.create(data);
-    console.log(quotation);
+    console.log(19, quotation);
     if (quotation) {
       res.send({ data: quotation });
     } else {
@@ -591,7 +587,6 @@ app.get("/quotationData", async (req, res) => {
   try {
     const quotationData = await Quotation.find({});
     res.send({ data: quotationData });
-    console.log(20, quotationData);
   } catch (e) {
     console.log(e);
   }
@@ -601,6 +596,7 @@ app.put("/quotationData/:_id", async (req, res) => {
   try {
     const quotation = await Quotation.findByIdAndUpdate(
       req.params._id,
+
       {
         $set: req.body,
       },
@@ -617,7 +613,6 @@ app.put("/quotationData/:_id", async (req, res) => {
 app.delete("/quotationData/:_id", async (req, res) => {
   try {
     const quotation = await Quotation.findByIdAndDelete(req.params._id);
-    console.log(quotation, req.params._id);
     if (!quotation) {
       res.send({ message: "Successfully delete" });
     } else {
@@ -628,6 +623,49 @@ app.delete("/quotationData/:_id", async (req, res) => {
   }
 });
 
+// Invoice Api
+app.get("/invoiceData", async (req, res) => {
+  try {
+    const invoiceData = await Quotation.find({});
+    res.send({ data: invoiceData });
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+app.put("/invoiceData/:_id", async (req, res) => {
+  try {
+    console.log(643, Invoice);
+    const invoice = await Quotation.findByIdAndUpdate(
+      req.params._id,
+
+      {
+        $set: req.body,
+      },
+      { new: true }
+    );
+    if (invoice) {
+      res.send({ data: invoice });
+    }
+    console.log(1, invoice);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
+app.delete("/invoiceData/:_id", async (req, res) => {
+  try {
+    console.log(617, req.params._id);
+    const invoice = await Quotation.findByIdAndDelete(req.params._id);
+    if (!invoice) {
+      res.send({ message: "Successfully delete" });
+    } else {
+      res.send({ message: "error" });
+    }
+  } catch (e) {
+    console.log(e);
+  }
+});
 //Painting Api
 
 app.post("/painting", async (req, res) => {
